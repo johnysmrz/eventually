@@ -1,0 +1,130 @@
+[tool.poetry]
+name = "RZB core service"
+version = "0.0.0"
+description = "RZB core service"
+authors = ["Jan Smrz <jan-smrz@jan-smrz.cz>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "^0.115.6"
+uvicorn = "^0.32.1"
+pydantic-settings = "^2.6.1"
+sqlalchemy = "^2.0.36"
+asyncpg = "^0.30.0"
+psycopg2 = "^2.9.10"
+python-multipart = "^0.0.19"
+sqlmodel = "^0.0.22"
+pyyaml = "^6.0.2"
+redis-om = "^0.3.3"
+pydantic = {extras = ["email"], version = "^2.9.2"}
+pyjwt = "^2.10.1"
+requests = "^2.32.3"
+alembic = "^1.14.0"
+greenlet = "^3.1.1"
+asyncclick = "^8.2.2.2"
+opentelemetry-sdk = "^1.36.0"
+opentelemetry-instrumentation = "^0.57b0"
+opentelemetry-api = "^1.36.0"
+opentelemetry-exporter-otlp = "^1.36.0"
+rich = "^14.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+mypy = "^1.13.0"
+pytest-aio = "^1.9.0"
+ruff = "^0.7.4"
+pytest-env = "^1.1.5"
+time-machine = "^2.16.0"
+httpx = "^0.28.1"
+pytest-httpx = "^0.35.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+addopts = "-v --no-header --capture=sys -p no:warnings"
+testpaths = [
+    "tests/"
+]
+
+pythonpath = [
+  "src/"
+]
+
+# env = [
+#   "POSTGRES_USER=rzbportal",
+#   "POSTGRES_PASSWORD=rzbportal",
+#   "POSTGRES_DB=test",
+#   "POSTGRES_HOST=localhost",
+#   "JWT_SECRET_KEY=superdupersecret959493",
+#   "REDIS_OM_URL=redis://@localhost:6379/0",
+#   "EMAIL_SERVICE_URL=localhost:8081/api",
+#   "BASE_URL=http://localhost:8080"
+# ]
+markers = [
+  "unit",
+  "integration",
+  "e2e",
+  "asyncio",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "def __str__",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "if typing.TYPE_CHECKING:"
+]
+
+[[tool.mypy.overrides]]
+module = "sqlalchemy.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+src = ["src", "tests"]
+target-version = "py313"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+  "A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ARG", "BLE",
+  "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH",
+  "PIE", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TID",
+  "TRY", "UP", "YTT"
+]
+
+ignore = [
+  "B007", # Checks for unused variables in loops. Unused variables must be prefixed with an underscore but we don't want it
+  "B904", # Checks for raise statements in exception handlers that lack a from clause. Yea but sometimes it's not needed.
+  "G004", # Checks for uses of f-strings to format logging messages. Modern logging may use f-strings.
+  "D212", # Checks for docstring summary lines that are not positioned on the first physical line of the docstring. Nope...
+  "D100", # Checks for undocumented public module definitions. Nope...
+  "D107", # Checks for public __init__ method definitions that are missing docstrings. Simple inits don't need this.
+  "TRY300", # Checks for return statements in try blocks. This is much harder to read.
+  "D105", # Checks for undocumented magic method definitions. Nope...
+  "DTZ005", # Checks for usages of datetime.datetime.now() that do not specify a timezone. We don't care about timezones.
+  "SIM108", # Check for if-else-blocks that can be replaced with a ternary operator. We don't care about this.
+  "D104", # Checks for undocumented public package definitions. We don't care about this.
+  "D101", # Checks for undocumented public class definitions. We don't care about this.
+  "D106", # Checks for undocumented public method definitions. We don't care about this.
+  "D103", # Checks for undocumented public function definitions. We don't care about this.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D", "S", "N801", "N802", "N806", "T201", "E501", "S101", "PT023", "W292", "W293", "F401", "I001", "SLF001", "EM101", "TRY003", "E721", "PT011", "PT003"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
