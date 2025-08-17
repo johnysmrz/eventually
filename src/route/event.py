@@ -8,7 +8,7 @@ event_router = APIRouter()
 
 event_service_dependency = Depends(service(EventService))
 
-@event_router.get("/")
+@event_router.get("")
 async def list_events(
     event_service: EventService = event_service_dependency,
 ) -> ListResponse[EventEntity]:

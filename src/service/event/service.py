@@ -25,4 +25,8 @@ class EventService:
                 start_date=event.start_date,
                 end_date=event.end_date,
                 status=str(event.status.value),
+                created_by=event.created_by,
+                created_at=event.created_at,
+                updated_by=event.updated_by,
+                updated_at=event.updated_at
             ) for event in await self.repository.list_active_events(session=session)]

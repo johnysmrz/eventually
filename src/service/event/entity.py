@@ -1,15 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 from uuid import UUID
 
 from pydantic import BaseModel
 
-    # __tablename__ = "t_event" # pyright: ignore[reportAssignmentType]
-    # id_event: UUID | None = Field(default_factory=uuid4, primary_key=True)
-    # name: str = Field(max_length=255, nullable=False)
-    # description: str | None = Field(default=None, max_length=1024)
-    # start_date: date_type = Field()
-    # end_date: date_type = Field()
-    # status: EventStatus = Field(default=EventStatus.DRAFT)
 
 class EventEntity(BaseModel):
     id_event: UUID | None = None
@@ -18,3 +11,7 @@ class EventEntity(BaseModel):
     start_date: date
     end_date: date
     status: str | None = None
+    created_by: UUID | None = None
+    created_at: datetime | None = None
+    updated_by: UUID | None = None
+    updated_at: datetime | None = None
