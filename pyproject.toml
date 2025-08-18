@@ -96,7 +96,7 @@ ignore_missing_imports = true
 [tool.ruff]
 src = ["src", "tests"]
 target-version = "py313"
-line-length = 120
+line-length = 200
 
 [tool.ruff.lint]
 select = [

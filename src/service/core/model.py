@@ -1,9 +1,9 @@
 import enum
 from datetime import date as date_type
-from datetime import datetime
+from datetime import datetime, timedelta
 from uuid import UUID, uuid4
 
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, UniqueConstraint
 from sqlmodel import DateTime, Field, SQLModel, text
 
 SQLModel.metadata.naming_convention = {
@@ -75,6 +75,27 @@ class UserModel(LifecycleMixin, table=True):
         max_length=255
     )
 
+class AttendeeModel(LifecycleMixin, table=True):
+    __tablename__ = "t_attendee" # pyright: ignore[reportAssignmentType]
+    id_attendee: UUID = Field(default_factory=uuid4, primary_key=True)
+    id_event: UUID = Field(foreign_key="t_event.id_event", nullable=False)
+    email: str = Field(max_length=255, nullable=False)
+    full_name: str | None = Field(max_length=255, nullable=True)
+
+    can_register_from: datetime | None = Field(default=None)
+    access_token: str | None = Field(default=None, max_length=255)
+    invite_email_sent: bool = Field(default=False)
+
+    __table_args__ = (
+        UniqueConstraint("email", "id_event", name="uq_attendee_email"),
+    )
+
+class LocationModel(LifecycleMixin, table=True):
+    __tablename__ = "t_location"  # pyright: ignore[reportAssignmentType]
+    id_location: UUID | None = Field(default_factory=uuid4, primary_key=True)
+    id_event: UUID | None = Field(foreign_key="t_event.id_event", nullable=False)
+    name: str = Field(max_length=255, nullable=False)
+
 class EventModel(LifecycleMixin, table=True):
     __tablename__ = "t_event" # pyright: ignore[reportAssignmentType]
     id_event: UUID | None = Field(default_factory=uuid4, primary_key=True)
@@ -93,19 +114,43 @@ class ProgramItemModel(LifecycleMixin, table=True):
     __tablename__ = "t_program_item" # pyright: ignore[reportAssignmentType]
     id_program_item: UUID | None = Field(default=None, primary_key=True)
     id_event: UUID | None = Field(foreign_key="t_event.id_event", nullable=False)
+    id_location: UUID | None = Field(default=None, foreign_key="t_location.id_location", nullable=True)
     name: str = Field(max_length=255, nullable=False)
     description: str | None = Field(default=None, max_length=1024)
     type: ProgramType = Field(default=ProgramType.UNSPECIFIED)
+    attendee_limit: int | None = Field(default=None, nullable=True)
+    attendee_limit_buffer: int | None = Field(default=None, nullable=True)
+    required_time: timedelta = Field()
+    before_time_buffer: timedelta = Field(default=timedelta(minutes=10))
+    after_time_buffer: timedelta = Field(default=timedelta(minutes=10))
 
 
 class ProgramSessionModel(LifecycleMixin, table=True):
     __tablename__ = "t_program_session"  # pyright: ignore[reportAssignmentType]
     id_program_session: UUID | None = Field(default=None, primary_key=True)
     id_program_item: UUID | None = Field(foreign_key="t_program_item.id_program_item", nullable=False)
+    id_location_override: UUID | None = Field(default=None, foreign_key="t_location.id_location", nullable=True)
     start_time: datetime = Field(default_factory=default_datetime_tz, sa_type=DateTime)
     end_time: datetime | None = Field(default=None, sa_type=DateTime)
     note: str | None = Field(default=None, max_length=1024)
     status: SessionStatus = Field(default=SessionStatus.DRAFT)
+    attendee_limit_override: int | None = Field(default=None, nullable=True)
+
+
+class AttendeeProgramSessionModel(SQLModel, table=True):
+    __tablename__ = "t_attendee_program_session"  # pyright: ignore[reportAssignmentType]
+    id_attendee: UUID | None = Field(
+        foreign_key="t_attendee.id_attendee",
+        nullable=False,
+        primary_key=True
+    )
+    id_program_session: UUID | None = Field(
+        foreign_key="t_program_session.id_program_session",
+        nullable=False,
+        primary_key=True
+    )
+    created_at: datetime | None = Field(default_factory=default_datetime_tz, sa_type=DateTime)
+    note: str | None = Field(default=None, max_length=1024)
 
 
 from sqlalchemy.ext.asyncio.engine import AsyncEngine  # noqa: E402
@@ -123,6 +168,8 @@ async def create_db(engine: AsyncEngine):
     async with engine.begin() as conn:
         await conn.execute(text("DROP TABLE IF EXISTS t_user CASCADE;"))
         await conn.execute(text("DROP TABLE IF EXISTS t_event CASCADE;"))
+        await conn.execute(text("DROP TABLE IF EXISTS t_attendee CASCADE;"))
+        await conn.execute(text("DROP TABLE IF EXISTS t_location CASCADE;"))
         await conn.execute(text("DROP TABLE IF EXISTS t_program_item CASCADE;"))
         await conn.execute(text("DROP TABLE IF EXISTS t_program_session CASCADE;"))
         await conn.run_sync(SQLModel.metadata.create_all)

@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends
 
 from container import service
 from service.core import ListResponse
-from service.event import EventEntity, EventService
+from service.event import EventEntity, EventService, ProgramOverviewEntity
 
 event_router = APIRouter()
 
@@ -19,3 +21,10 @@ async def list_events(
         offset=0,
         total=len(events)
     )
+
+@event_router.get("/{event_id}/overview")
+async def get_event_overview(
+    event_id: UUID,
+    event_service: EventService = event_service_dependency,
+) -> list[ProgramOverviewEntity]:
+    return await event_service.overview(event_id)
