@@ -7,7 +7,7 @@ const routes = [
   { path: '/event-selector', name: 'EventSelector', component: EventSelectorPage },
   { path: '/event-editor/:id', name: 'EventEditor', component: EventEditorPage, children:
     [
-      { path: '', name: 'EventEditorProgram', component: () => import('./pages/EventEditor/Program.vue') },
+      { path: '', name: 'EventEditorProgram', component: () => import('./pages/EventEditor/ProgramOverview.vue') },
     ] 
   }
 ]

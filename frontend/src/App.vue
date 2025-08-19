@@ -12,7 +12,9 @@
 <script setup>
 import Main from './Main.vue'
 import StartupSplash from './components/StartupSplash.vue'
+import moment from 'moment/min/moment-with-locales'
 
+moment.locale('cs')
 
 </script>
 
