@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from uuid import UUID, uuid4
 
 from sqlalchemy import CheckConstraint, UniqueConstraint
+from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION
 from sqlmodel import DateTime, Field, SQLModel, text
 
 SQLModel.metadata.naming_convention = {
@@ -95,6 +96,8 @@ class LocationModel(LifecycleMixin, table=True):
     id_location: UUID | None = Field(default_factory=uuid4, primary_key=True)
     id_event: UUID | None = Field(foreign_key="t_event.id_event", nullable=False)
     name: str = Field(max_length=255, nullable=False)
+    lat: float | None = Field(default=None, sa_type=DOUBLE_PRECISION)
+    lon: float | None = Field(default=None, sa_type=DOUBLE_PRECISION)
 
 class EventModel(LifecycleMixin, table=True):
     __tablename__ = "t_event" # pyright: ignore[reportAssignmentType]
@@ -172,4 +175,5 @@ async def create_db(engine: AsyncEngine):
         await conn.execute(text("DROP TABLE IF EXISTS t_location CASCADE;"))
         await conn.execute(text("DROP TABLE IF EXISTS t_program_item CASCADE;"))
         await conn.execute(text("DROP TABLE IF EXISTS t_program_session CASCADE;"))
+        await conn.execute(text("DROP TABLE IF EXISTS t_attendee_program_session CASCADE;"))
         await conn.run_sync(SQLModel.metadata.create_all)

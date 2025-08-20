@@ -1,7 +1,8 @@
 from datetime import date, datetime, timedelta
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from sqlalchemy import DOUBLE_PRECISION
 
 
 class EventEntity(BaseModel):
@@ -30,3 +31,14 @@ class ProgramOverviewEntity(BaseModel):
     start_time: datetime | None = None
     end_time: datetime | None = None
     attendee_count: int | None = None
+
+class LocationEntity(BaseModel):
+    id_event: UUID | None
+    name: str
+    lat: float | None
+    lon: float | None
+
+class CreateLocationEntity(BaseModel):
+    name: str
+    lat: float | None
+    lon: float | None

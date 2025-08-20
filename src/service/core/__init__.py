@@ -4,6 +4,7 @@ from .model import (
     AttendeeProgramSessionModel,
     EventModel,
     EventStatus,
+    LocationModel,
     ProgramItemModel,
     ProgramSessionModel,
     SessionStatus,
@@ -28,5 +29,6 @@ __all__ = [
     "EventStatus",
     "SessionStatus",
     "AttendeeModel",
-    "AttendeeProgramSessionModel"
+    "AttendeeProgramSessionModel",
+    "LocationModel"
 ]

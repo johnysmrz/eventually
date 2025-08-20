@@ -6,6 +6,7 @@ from typing import Any
 from opentelemetry import metrics, trace
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlmodel import SQLModel
 
 logger = logging.getLogger("rzbportal.repository")
 tracer = trace.get_tracer("rzbportal.repository.tracer")
@@ -60,3 +61,16 @@ class BaseRepository:
                     except Exception:
                         await session.rollback()
                         raise
+
+    async def create(self, model: SQLModel, session: AsyncSession | None = None):
+        """
+        Asynchronously adds a new model instance to the database session.
+
+        Args:
+            model (SQLModel): The model instance to be added to the session.
+            session (AsyncSession | None, optional): An existing asynchronous database session. 
+                If None, a new session is created and managed internally.
+        """
+        async with self.ensure_session(session) as session:
+            session.add(model)
+            return model

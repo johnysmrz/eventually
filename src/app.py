@@ -8,6 +8,7 @@ from fastapi import FastAPI
 
 from route import ExceptionHandlingMiddleware
 from route.event import event_router
+from route.location import location_router
 from route.program import program_router
 
 root_logger = logging.getLogger()
@@ -33,6 +34,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(event_router, prefix="/public/event", tags=["event"])
 app.include_router(program_router, prefix="/public/event", tags=["program"])
+app.include_router(location_router, prefix="/public/event/{id_event}", tags=["location"])
 
 exception_map = [
     # ExceptionConfiguration(

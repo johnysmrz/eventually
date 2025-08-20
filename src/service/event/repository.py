@@ -7,7 +7,7 @@ from rich.console import Console
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select, text
 
-from service.core import BaseRepository, EventModel, EventStatus
+from service.core import BaseRepository, EventModel, EventStatus, LocationModel
 
 c = Console()
 
@@ -99,3 +99,20 @@ class EventRepository(BaseRepository):
                 """
             ), {"event_id": event_id})
             return [OverviewResult(*row) for row in result.fetchall()]
+
+    async def get_locations(self, event_id: UUID, *, session: AsyncSession | None = None) -> Sequence[LocationModel]:
+        """
+        Retrieves a list of locations for a given event.
+
+        Args:
+            event_id (UUID): The unique identifier of the event.
+            session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session is created.
+
+        Returns:
+            Sequence[LocationModel]: A sequence of LocationModel objects associated with the event.
+        """
+        async with self.ensure_session(session) as session:
+            result = await session.execute(
+                select(LocationModel).where(LocationModel.id_event == event_id)
+            )
+            return result.scalars().all()
