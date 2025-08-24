@@ -116,3 +116,43 @@ class EventRepository(BaseRepository):
                 select(LocationModel).where(LocationModel.id_event == event_id)
             )
             return result.scalars().all()
+
+
+    async def get_location_by_id(self, location_id: UUID, *, session: AsyncSession | None = None) -> LocationModel | None:
+        """
+        Asynchronously retrieves a location by its unique identifier.
+
+        Args:
+            location_id (UUID): The unique identifier of the location to retrieve.
+            session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session will be created.
+
+        Returns:
+            LocationModel | None: The location model if found, or None if not found.
+        """
+        async with self.ensure_session(session) as session:
+            row = await session.execute(
+                select(LocationModel).where(LocationModel.id_location == location_id)
+            )
+            return row.scalar_one_or_none()
+
+
+    async def delete_location(self, location_id: UUID, *, session: AsyncSession | None = None) -> None:
+        """
+        Asynchronously deletes a location from the database by its unique identifier.
+
+        Args:
+            location_id (UUID): The unique identifier of the location to delete.
+            session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session will be created.
+
+        Raises:
+            sqlalchemy.exc.NoResultFound: If no location with the given ID exists.
+
+        Returns:
+            None
+        """
+        async with self.ensure_session(session) as session:
+            result = await session.execute(
+                select(LocationModel).where(LocationModel.id_location == location_id)
+            )
+            location = result.scalar_one_or_none()
+            await session.delete(location)

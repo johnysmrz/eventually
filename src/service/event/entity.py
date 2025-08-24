@@ -2,8 +2,13 @@ from datetime import date, datetime, timedelta
 from uuid import UUID
 
 from pydantic import BaseModel, Field
-from sqlalchemy import DOUBLE_PRECISION
 
+
+class LifecycleEntity(BaseModel):
+    created_by: UUID | None = None
+    created_at: datetime | None = None
+    updated_by: UUID | None = None
+    updated_at: datetime | None = None
 
 class EventEntity(BaseModel):
     id_event: UUID | None = None
@@ -32,13 +37,16 @@ class ProgramOverviewEntity(BaseModel):
     end_time: datetime | None = None
     attendee_count: int | None = None
 
-class LocationEntity(BaseModel):
-    id_event: UUID | None
+class LocationEntity(LifecycleEntity):
+    id_location: UUID
+    id_event: UUID
     name: str
     lat: float | None
     lon: float | None
+    color: str = Field(pattern=r"^#[0-9A-Fa-f]{6}$")
 
 class CreateLocationEntity(BaseModel):
     name: str
-    lat: float | None
-    lon: float | None
+    lat: float | None = Field(default=None, ge=-90, le=90)
+    lon: float | None = Field(default=None, ge=-180, le=180)
+    color: str = Field(pattern=r"^#[0-9A-Fa-f]{6}$")

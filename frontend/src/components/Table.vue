@@ -4,6 +4,9 @@
             <thead>
                 <tr>
                     <th v-for="column in columns" :key="column.id">{{ column.title }}</th>
+                    <th v-if="hasControls">
+                        <slot name="controlsHeader" />
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -11,8 +14,10 @@
                     <td v-for="column in columns" :key="column.id">
                         <slot :name="`cell[${column.id}]`" :cellContent="row[column.id]" :row="row">
                             {{ row[column.id] }}
-                            {{ column.id }}
                         </slot>
+                    </td>
+                    <td v-if="hasControls">
+                        <slot name="controls" :row="row" />
                     </td>
                 </tr>
             </tbody>
@@ -37,6 +42,7 @@ const props = defineProps({
     }
 })
 const slots = useSlots()
+const hasControls = !!slots.controls
 defineEmits([])
 </script>
 

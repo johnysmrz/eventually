@@ -3,8 +3,8 @@
         <div class="menu">
             <nav>
                 <RouterLink :to="{ name: 'EventEditorProgram' }">Program</RouterLink>
-                <!-- <RouterLink to="kalendar">Kalendář</RouterLink> -->
-                <!-- <RouterLink to="mista">Místa</RouterLink> -->
+                <RouterLink :to="{ name: 'EventEditorCalendar' }">Kalendář</RouterLink>
+                <RouterLink :to="{ name: 'EventEditorLocations' }">Lokace</RouterLink>
             </nav>
         </div>
         <div class="editor">
@@ -35,7 +35,6 @@ const eventStore = useEventStore()
     display: grid;
     grid-template-columns: 200px 1fr;
     grid-template-rows: 1fr;
-    grid-column-gap: 10px;
     grid-row-gap: 0px;
     height: 100%;
 

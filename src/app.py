@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(event_router, prefix="/public/event", tags=["event"])
 app.include_router(program_router, prefix="/public/event", tags=["program"])
-app.include_router(location_router, prefix="/public/event/{id_event}", tags=["location"])
+app.include_router(location_router, prefix="/public/event/{id_event}/location", tags=["location"])
 
 exception_map = [
     # ExceptionConfiguration(

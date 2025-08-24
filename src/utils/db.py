@@ -41,8 +41,9 @@ async def provision_events():
                 id_location=UUID("6bb4dee0-c0c9-407d-b3e3-b752942103d2"),
                 id_event=UUID("98992867-827f-4c7b-b603-a435b1234706"),
                 name="Agora",
-                lat=52.5200,
-                lon=13.4050
+                lat=50.058956,
+                lon=14.010947,
+                color="#FF4500"
             )
         )
         session.add(
@@ -50,8 +51,9 @@ async def provision_events():
                 id_location=UUID("77006683-90a8-46af-a3ea-9ad7af6f5d85"),
                 id_event=UUID("98992867-827f-4c7b-b603-a435b1234706"),
                 name="Spad",
-                lat=52.5200,
-                lon=13.4050
+                lat=50.058760,
+                lon=14.010011,
+                color="#4169E1"
             )
         )
         session.add(
@@ -59,8 +61,9 @@ async def provision_events():
                 id_location=UUID("7c8ed9fd-c3ab-4eba-9710-601c38a21eea"),
                 id_event=UUID("98992867-827f-4c7b-b603-a435b1234706"),
                 name="Dira",
-                lat=52.5200,
-                lon=13.4050
+                lat=50.058742,
+                lon=14.010603,
+                color="#B8860B"
             )
         )
         session.add(
@@ -68,8 +71,9 @@ async def provision_events():
                 id_location=UUID("89bceaee-1906-4a77-add9-6ac105f91f24"),
                 id_event=UUID("6cc53c48-44ed-4973-905e-a46c60218d92"),
                 name="Brana pekel",
-                lat=52.5200,
-                lon=13.4050
+                lat=50.058504,
+                lon=14.013434,
+                color="#0BB887"
             )
         )
         session.add(

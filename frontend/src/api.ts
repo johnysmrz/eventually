@@ -22,7 +22,7 @@ export type ApiListResponse<T> = {
 
 const api = ky.create({
   prefixUrl: '/api',
-  timeout: 5000
+  timeout: 30000
 })
 
 export default api

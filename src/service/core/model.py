@@ -93,11 +93,12 @@ class AttendeeModel(LifecycleMixin, table=True):
 
 class LocationModel(LifecycleMixin, table=True):
     __tablename__ = "t_location"  # pyright: ignore[reportAssignmentType]
-    id_location: UUID | None = Field(default_factory=uuid4, primary_key=True)
-    id_event: UUID | None = Field(foreign_key="t_event.id_event", nullable=False)
+    id_location: UUID = Field(default_factory=uuid4, primary_key=True)
+    id_event: UUID= Field(foreign_key="t_event.id_event", nullable=False)
     name: str = Field(max_length=255, nullable=False)
     lat: float | None = Field(default=None, sa_type=DOUBLE_PRECISION)
     lon: float | None = Field(default=None, sa_type=DOUBLE_PRECISION)
+    color: str = Field(regex=r"^#[0-9A-Fa-f]{6}$", le=7)
 
 class EventModel(LifecycleMixin, table=True):
     __tablename__ = "t_event" # pyright: ignore[reportAssignmentType]

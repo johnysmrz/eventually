@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
@@ -87,33 +87,85 @@ class EventService:
             result = []
             for row in await self.repository.get_locations(event_id, session=session):
                 result.append(LocationEntity(
+                    id_location=row.id_location,
                     id_event=row.id_event,
                     name=row.name,
                     lat=row.lat,
-                    lon=row.lon
+                    lon=row.lon,
+                    color=row.color,
+                    created_at=row.created_at,
+                    updated_at=row.updated_at,
+                    created_by=row.created_by,
+                    updated_by=row.updated_by
                 ))
             return result
 
 
-    async def create_location(self, event_id: UUID, new_location: CreateLocationEntity, *, session: AsyncSession | None = None):
+    async def create_location(self, event_id: UUID, new_location: CreateLocationEntity, *, session: AsyncSession | None = None) -> UUID:
         """
-        Asynchronously creates a new location associated with a given event.
+        Asynchronously creates a new location for a given event.
 
         Args:
-            event_id (UUID): The unique identifier of the event to which the location will be linked.
-            new_location (CreateLocationEntity): An entity containing the details of the new location (name, latitude, longitude).
+            event_id (UUID): The unique identifier of the event to which the location will be added.
+            new_location (CreateLocationEntity): The data required to create the new location.
+            session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session will be created.
+
+        Returns:
+            UUID: The unique identifier of the newly created location.
+        """
+        new_location_id = uuid4()
+        async with self.repository.ensure_session(session) as session:
+            new_location_model = LocationModel(
+                id_event=event_id,
+                id_location=new_location_id,
+                name=new_location.name,
+                lat=new_location.lat,
+                lon=new_location.lon,
+                color=new_location.color
+            )
+            await self.repository.create(new_location_model, session=session)
+        return new_location_id
+
+    async def get_location_by_id(self, location_id: UUID, *, session: AsyncSession | None = None) -> LocationEntity | None:
+        """
+        Asynchronously retrieves a location by its unique identifier.
+
+        Args:
+            location_id (UUID): The unique identifier of the location to retrieve.
+            session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session will be created.
+
+        Returns:
+            LocationEntity | None: The location entity if found, or None if not found.
+        """
+        async with self.repository.ensure_session(session) as session:
+            row = await self.repository.get_location_by_id(location_id, session=session)
+            if row:
+                return LocationEntity(
+                    id_event=row.id_event,
+                    id_location=row.id_location,
+                    name=row.name,
+                    lat=row.lat,
+                    lon=row.lon,
+                    color=row.color,
+                    created_at=row.created_at,
+                    updated_at=row.updated_at,
+                    created_by=row.created_by,
+                    updated_by=row.updated_by
+                )
+            return None
+
+    async def delete_location(self, location_id: UUID, *, session: AsyncSession | None = None) -> None:
+        """
+        Asynchronously deletes a location identified by the given UUID.
+
+        Args:
+            location_id (UUID): The unique identifier of the location to delete.
             session (AsyncSession, optional): An optional SQLAlchemy asynchronous session. If not provided, a new session will be created.
 
         Returns:
             None
         Raises:
-            Any exceptions raised by the repository layer during creation or session management.
+            Any exceptions raised by the repository's delete_location method.
         """
         async with self.repository.ensure_session(session) as session:
-            new_location_model = LocationModel(
-                id_event=event_id,
-                name=new_location.name,
-                lat=new_location.lat,
-                lon=new_location.lon
-            )
-            await self.repository.create(new_location_model, session=session)
+            await self.repository.delete_location(location_id, session=session)
