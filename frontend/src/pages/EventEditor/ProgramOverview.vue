@@ -25,9 +25,9 @@
 import { ref, defineEmits } from 'vue'
 import useProgramOverview from '../../api/EventProgramOverview.js'
 import { useRoute } from 'vue-router'
-import Table from '../../components/Table.vue'
-import Badge from '../../components/Badge.vue'
-import Progress from '../../components/Progress.vue'
+import Table from '../../components/ui/Table.vue'
+import Badge from '@ui/Badge.vue'
+import Progress from '@ui/Progress.vue'
 
 
 const route = useRoute()

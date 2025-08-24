@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref, defineEmits } from 'vue'
-import { useEventStore } from '../stores/event.js';
+import { useEventStore } from '../stores/event.ts';
 import { RouterLink, RouterView } from 'vue-router';
 
 const eventStore = useEventStore()

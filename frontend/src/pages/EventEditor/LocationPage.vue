@@ -30,13 +30,13 @@
 import { ref, defineEmits, computed } from 'vue'
 import useEventLocation from '../../api/EventLocation'
 import { useRoute } from 'vue-router'
-import Table from '../../components/Table.vue'
-import type { TableColumn } from '../../components/Table.d.ts'
+import Table from '../../components/ui/Table.vue'
+import type { TableColumn } from '../../components/ui/Table'
 // @ts-ignore
 import { GoogleMap, CustomMarker } from 'vue3-google-map'
-import Button from '../../components/ui/Button.vue'
-import Dialog from '../../components/Dialog.vue'
-import AutoForm from '../../components/ui/AutoForm.vue'
+import Button from '@ui/Button.vue'
+import Dialog from '@ui/Dialog.vue'
+import AutoForm from '@ui/AutoForm.vue'
 
 // @ts-ignore
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY 

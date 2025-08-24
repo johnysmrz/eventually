@@ -47,7 +47,7 @@ defineEmits([])
 </script>
 
 <style scoped lang="scss">
-@use '../config.scss' as config;
+@use '@/config.scss' as config;
 
 $table-content-padding: 15px;
 

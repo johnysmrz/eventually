@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
 import { useEventStore } from '../stores/event.js';
-import eventBus from '../eventBus.ts';
+import eventBus from '@/eventBus.js';
 
 
 const eventStore = useEventStore()

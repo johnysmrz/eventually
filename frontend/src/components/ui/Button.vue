@@ -2,26 +2,26 @@
     <button
         :disabled="disabled"
         :type="type"
-        @click="handleClick"
         :class="`btn btn__${color}`"
+        @click="handleClick"
     >
         <slot />
     </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
     color: {
         type: String,
         default: 'primary',
-        validator: (value) => ['primary', 'secondary', 'success', 'info', 'warning', 'error'].includes(value)
+        validator: (value: string) => ['primary', 'secondary', 'success', 'info', 'warning', 'error'].includes(value)
     },
     type: {
-        type: String,
+        type: String as () => 'button' | 'submit' | 'reset',
         default: 'button',
-        validator: (value) => ['button', 'submit', 'reset'].includes(value)
+        validator: (value: string) => ['button', 'submit', 'reset'].includes(value)
     },
     disabled: {
         type: Boolean,
@@ -34,9 +34,10 @@ const props = defineProps({
 
 const emit = defineEmits(['click'])
 
-function handleClick(event) {
+
+function handleClick(event: MouseEvent) {
     if (props.confirmText) {
-        const confirmed = confirm(props.confirmText)
+        const confirmed = window.confirm(props.confirmText)
         if (!confirmed) {
             return
         }

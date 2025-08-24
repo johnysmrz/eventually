@@ -32,7 +32,7 @@ const progressBarWidth = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@use '../config.scss' as config;
+@use '@/config.scss' as config;
 
 .progress {
     border: 1px solid config.$text-color;

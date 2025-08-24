@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use '../config.scss' as config;
+@use '../../config.scss' as config;
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.6);

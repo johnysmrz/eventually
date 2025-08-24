@@ -17,7 +17,7 @@ const props = defineProps<{
 </script>
 
 <style lang="scss" scoped>
-@use '../config.scss' as config;
+@use '../../config.scss' as config;
 
 .badge {
     display: inline-flex;

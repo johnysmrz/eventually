@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@primeuix/themes": "^1.2.3",
+    "@rollup/plugin-alias": "^5.1.1",
     "ky": "^1.8.2",
     "mitt": "^3.0.1",
     "moment": "^2.30.1",
