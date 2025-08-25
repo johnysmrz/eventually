@@ -3,8 +3,11 @@
         <div class="menu">
             <nav>
                 <RouterLink :to="{ name: 'EventEditorProgram' }">Program</RouterLink>
+                <span class="right-arrow"></span>
                 <RouterLink :to="{ name: 'EventEditorCalendar' }">Kalendář</RouterLink>
+                <span class="right-arrow"></span>
                 <RouterLink :to="{ name: 'EventEditorLocations' }">Lokace</RouterLink>
+                <span class="right-arrow"></span>
             </nav>
         </div>
         <div class="editor">
@@ -41,17 +44,42 @@ const eventStore = useEventStore()
     .menu {
         background-color: config.$surface-color;
         border-right: 1px solid config.$surface-edge-color;
+
         nav {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            & > a {
-                margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr 10px;
+
+            // padding: 10px;
+            &>a {
+                // margin-bottom: 10px;
+                padding: 5px 10px;
                 text-decoration: none;
                 display: block;
                 color: config.$text-color;
+
                 &:hover {
                     color: config.$text-color-hover;
+                }
+
+                &.router-link-exact-active {
+                    font-weight: bold;
+                    padding: 5px 10px;
+                    background-color: config.$primary-color;
+
+                    &+span {
+                        background-color: config.$primary-color;
+
+                        &::after {
+                            content: '';
+                            border: solid config.$primary-color;
+                            border-width: 0 6px 6px 0;
+                            display: inline-block;
+                            padding: 4px;
+                            margin-top: 7px;
+                            transform: rotate(-45deg);
+                        }
+
+                    }
                 }
             }
         }

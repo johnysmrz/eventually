@@ -2,7 +2,7 @@
     <button
         :disabled="disabled"
         :type="type"
-        :class="`btn btn__${color}`"
+        class="btn"
         @click="handleClick"
     >
         <slot />
@@ -10,14 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, computed } from 'vue'
 
 const props = defineProps({
-    color: {
-        type: String,
-        default: 'primary',
-        validator: (value: string) => ['primary', 'secondary', 'success', 'info', 'warning', 'error'].includes(value)
-    },
     type: {
         type: String as () => 'button' | 'submit' | 'reset',
         default: 'button',
@@ -33,7 +28,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['click'])
-
 
 function handleClick(event: MouseEvent) {
     if (props.confirmText) {
@@ -55,54 +49,43 @@ function handleClick(event: MouseEvent) {
 .btn {
     padding: 8px;
     display: inline-block;
+    background-color: config.$primary-color;
     color: config.$text-color;
-    background-color: config.$surface-color;
     border: none;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    & > i {
-        margin-right: 4px;
-        transform: translateY(1px);
-    }
-    &:not(:last-of-type) {
-        margin-right: 4px;
-    }
-    &__primary {
+    min-width: 80px;
+
+    &-primary {
         background-color: config.$primary-color;
         &:hover {
             background-color: color.adjust(config.$primary-color, $lightness: -10%);
         }
-    }
-    &__secondary {
-        background-color: config.$secondary-color;
-        &:hover {
-            background-color: color.adjust(config.$secondary-color, $lightness: -10%);
+        &_outline {
+            background-color: transparent;
+            border: 1px solid config.$primary-color;
+            &:hover {
+                background-color: config.$primary-color;
+                color: config.$surface-color;
+            }
         }
     }
-    &__success {
-        background-color: config.$success-color;
-        &:hover {
-            background-color: color.adjust(config.$success-color, $lightness: -10%);
-        }
-    }
-    &__info {
-        background-color: config.$info-color;
-        &:hover {
-            background-color: color.adjust(config.$info-color, $lightness: -10%);
-        }
-    }
-    &__warning {
+
+    &-warning {
         background-color: config.$warning-color;
         &:hover {
             background-color: color.adjust(config.$warning-color, $lightness: -10%);
         }
     }
-    &__error {
+
+    &-error {
         background-color: config.$error-color;
         &:hover {
             background-color: color.adjust(config.$error-color, $lightness: -10%);
         }
     }
 }
+
+
 </style>

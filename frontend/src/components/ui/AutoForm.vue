@@ -9,8 +9,14 @@
             </span>
         </form>
         <span class="form-controls">
-            <Button @click="handleCancel">Zrušit</Button>
-            <Button @click="handleSubmit" type="submit">Ok</Button>
+            <Button @click="handleCancel" class="btn-error">
+                <i class="pi pi-times"></i>
+                Zrušit
+            </Button>
+            <Button @click="handleSubmit" class="btn-primary" type="submit">
+                <i class="pi pi-check"></i>
+                Ok
+            </Button>
         </span>
     </span>
 </template>

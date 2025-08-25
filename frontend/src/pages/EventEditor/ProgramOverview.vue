@@ -1,6 +1,5 @@
 <template>
     <div class="event-program-overview">
-        <h1>Program Overview</h1>
         <Table :columns="columns" :data="programOverview">
             <template #cell[start_time]="{ cellContent, row }">
                 {{ cellContent }}
@@ -49,4 +48,8 @@ await fetchProgramOverview(eventId)
 
 <style scoped lang="scss">
 @use '../../config.scss' as config;
+
+.event-program-overview {
+    margin: 10px;
+}
 </style>

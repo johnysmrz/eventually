@@ -27,4 +27,10 @@ body {
     background-color: config.$background-color;
     color: config.$text-color;
 }
+
+.panel {
+    background-color: config.$surface-color;
+    border: 1px solid config.$surface-edge-color;
+    border-radius: config.$radius;
+}
 </style>

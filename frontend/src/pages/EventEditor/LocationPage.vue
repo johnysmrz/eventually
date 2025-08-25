@@ -8,10 +8,16 @@
                 <span>{{ row.lat }}, {{ row.lon }}</span>
             </template>
             <template #controlsHeader>
-                <Button @click="dialogVisible = true">Přidat lokaci</Button>
+                <Button class="btn btn-primary" @click="dialogVisible = true">
+                    <i class="pi pi-plus"></i>
+                    Přidat lokaci
+                </Button>
             </template>
             <template #controls="{ row }">
-                <Button color="error" @click="handleDeleteLocation(row.id_location)" confirmText="Opravdu chcete smazat?">Smazat</Button>
+                <Button class="btn btn-error" @click="handleDeleteLocation(row.id_location)" confirmText="Opravdu chcete smazat?">
+                    <i class="pi pi-trash"></i>
+                    Smazat
+                </Button>
             </template>
         </Table>
         <GoogleMap :api-key="googleMapsApiKey" style="width: 100%; height: 600px" :center="center"
@@ -86,6 +92,8 @@ await fetchEventLocation(eventId)
 
 #event-location-page {
     display: flex;
+    column-gap: 10px;
+    margin: 10px;
 }
 
 .marker {
