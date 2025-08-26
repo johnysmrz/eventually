@@ -1,16 +1,5 @@
 from .entity import ErrorEntity, FilterDefinition, ListCriterion, ListOptionField, ListOptions, ListResponse
-from .model import (
-    AttendeeModel,
-    AttendeeProgramSessionModel,
-    EventModel,
-    EventStatus,
-    LocationModel,
-    ProgramItemModel,
-    ProgramSessionModel,
-    SessionStatus,
-    UserModel,
-    create_db,
-)
+from .model import AttendeeModel, AttendeeProgramSessionModel, EventModel, EventStatus, LocationModel, ProgramItemModel, ProgramSessionModel, ProgramType, SessionStatus, UserModel, create_db
 from .repository import BaseRepository
 
 __all__ = [
@@ -30,5 +19,6 @@ __all__ = [
     "SessionStatus",
     "AttendeeModel",
     "AttendeeProgramSessionModel",
-    "LocationModel"
+    "LocationModel",
+    "ProgramType"
 ]

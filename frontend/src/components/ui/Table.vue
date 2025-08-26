@@ -13,7 +13,12 @@
                 <tr v-for="row in data" :key="row.id_program_item">
                     <td v-for="column in columns" :key="column.id">
                         <slot :name="`cell[${column.id}]`" :cellContent="row[column.id]" :row="row">
-                            {{ row[column.id] }}
+                            <template v-if="column.type === columnType.DELTATIME">
+                                {{ formatDeltaTime(row[column.id]) }}
+                            </template>
+                            <template v-else>
+                                {{ row[column.id] }}
+                            </template>
                         </slot>
                     </td>
                     <td v-if="hasControls">
@@ -27,6 +32,7 @@
 
 <script setup lang="ts">
 import type { TableColumn } from './Table.d.ts'
+import { TableColumnType } from './Table.d'
 import { useSlots } from 'vue';
 
 const props = defineProps({
@@ -41,8 +47,17 @@ const props = defineProps({
         default: () => []
     }
 })
+
+const columnType = TableColumnType
 const slots = useSlots()
 const hasControls = !!slots.controls
+
+const formatDeltaTime = (value: any) => {
+    console.info(value)
+    // Implement your formatting logic here
+    return value
+}
+
 defineEmits([])
 </script>
 
@@ -69,6 +84,7 @@ $table-content-padding: 15px;
         color: config.$text-color;
         padding: $table-content-padding;
         text-align: left;
+        text-wrap: nowrap;
     }
     tbody {
         tr:not(:last-child) {

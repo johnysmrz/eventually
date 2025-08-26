@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio.engine import AsyncEngine
 
 from di import Container
 from service.event import EventRepository, EventService
+from service.programitem import ProgramItemRepository, ProgramItemService
 from settings import Settings, get_settings
 
 logger = logging.getLogger("container")
@@ -23,6 +24,12 @@ container.add(EventRepository, event_repository)
 
 event_service = EventService(event_repository)
 container.add(EventService, event_service)
+
+programitem_repository = ProgramItemRepository(async_session)
+container.add(ProgramItemRepository, programitem_repository)
+
+programitem_service = ProgramItemService(programitem_repository)
+container.add(ProgramItemService, programitem_service)
 
 container.spinup()
 

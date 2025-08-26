@@ -1,4 +1,4 @@
-import api from '../api.ts'
+import api from '../api'
 import { Ref, ref } from 'vue'
 import moment from 'moment/min/moment-with-locales'
 import type { AutoFormConfig } from '../components/ui/AutoForm.d.ts'

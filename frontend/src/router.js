@@ -29,6 +29,11 @@ const routes = [
         name: "EventEditorLocations",
         component: () => import("./pages/EventEditor/LocationPage.vue"),
       },
+      {
+        path: "program-items",
+        name: "EventEditorProgramItems",
+        component: () => import("./pages/EventEditor/ProgramItemPage.vue"),
+      }
     ],
   },
 ];

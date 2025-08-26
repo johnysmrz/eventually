@@ -19,6 +19,9 @@
       ],
       "@ui/*": [
         "./src/components/ui/*"
+      ],
+      "@api/*": [
+        "./src/api/*"
       ]
     }
   }

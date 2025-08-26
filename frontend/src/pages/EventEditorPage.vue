@@ -8,6 +8,8 @@
                 <span class="right-arrow"></span>
                 <RouterLink :to="{ name: 'EventEditorLocations' }">Lokace</RouterLink>
                 <span class="right-arrow"></span>
+                <RouterLink :to="{ name: 'EventEditorProgramItems' }">Programové položky</RouterLink>
+                <span class="right-arrow"></span>
             </nav>
         </div>
         <div class="editor">

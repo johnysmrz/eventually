@@ -16,7 +16,7 @@ import { useEventStore } from '@/stores/event'
 import { computed } from 'vue'
 import { RouterView } from "vue-router"
 import TheMenuBar from './components/TheMenuBar.vue'
-import { MenuItem } from './defs/menuItem.ts'
+import { MenuItem } from './defs/menuItem'
 
 
 const eventStore = useEventStore()

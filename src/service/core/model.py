@@ -116,9 +116,9 @@ class EventModel(LifecycleMixin, table=True):
 
 class ProgramItemModel(LifecycleMixin, table=True):
     __tablename__ = "t_program_item" # pyright: ignore[reportAssignmentType]
-    id_program_item: UUID | None = Field(default=None, primary_key=True)
-    id_event: UUID | None = Field(foreign_key="t_event.id_event", nullable=False)
-    id_location: UUID | None = Field(default=None, foreign_key="t_location.id_location", nullable=True)
+    id_program_item: UUID = Field(default=None, primary_key=True)
+    id_event: UUID = Field(foreign_key="t_event.id_event", nullable=False)
+    id_location: UUID = Field(default=None, foreign_key="t_location.id_location", nullable=True)
     name: str = Field(max_length=255, nullable=False)
     description: str | None = Field(default=None, max_length=1024)
     type: ProgramType = Field(default=ProgramType.UNSPECIFIED)
